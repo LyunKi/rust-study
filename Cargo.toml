@@ -1,0 +1,7 @@
+[package]
+name = "rust-study"
+version = "0.1.0"
+authors = ["龙云 <longyun@co-mall.com>"]
+
+[dependencies]
+rand ="0.3.14"
