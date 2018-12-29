@@ -1,10 +1,9 @@
 extern crate rand;
 
-use rand::Rng;
-use std::cmp::Ordering;
-use std::io;
+use std::{cmp::Ordering,io};
+use self::rand::Rng;
 
-fn main() {
+pub fn guess_game(){
     println!("guess the number!");
     let secret_number = rand::thread_rng().gen_range(1, 101);
     println!("the secret num is {}", secret_number);
