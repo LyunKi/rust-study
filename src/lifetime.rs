@@ -1,6 +1,9 @@
-pub fn largest<'a, T>(a: &'a T, b: &'a T) -> &'a T
-    where T: PartialOrd {
-    if a > b {
+use std::fmt::Display;
+
+pub fn largest<'a, T>(a: &'a str, b: &'a str,c:T) -> &'a str
+    where T: Display {
+    println!("{}", c);
+    if a.len() > b.len() {
         a
     }else {
         b

@@ -13,9 +13,10 @@ fn back_two_test(){
 
 #[test]
 fn life_test(){
-    let a = 9;
-    let b = a - 1;
-    assert_eq!(rust_study::largest(&a,&b),&a)
+    let a = "ab";
+    let b = "a";
+    let c = "compare beginning";
+    assert_eq!(rust_study::largest(a,b,c),a)
 }
 
 #[test]
