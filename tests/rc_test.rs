@@ -1,5 +1,6 @@
 use std::rc::Rc;
 use std::cell::RefCell;
+use std::rc::Weak;
 
 enum List<T> {
     Cons(T, Rc<List<T>>),
@@ -73,4 +74,42 @@ fn test_crc_1() {
 // 取消如下行的注释来观察引用循环;
 // 这会导致栈溢出
 //     println!("a next item = {:?}", a.tail());
+}
+
+#[derive(Debug)]
+struct Tester;
+
+impl Drop for Tester{
+    fn drop(&mut self) {
+        println!("tester is dropping");
+    }
+}
+
+impl  Tester{
+    fn new()-> Tester {
+        Tester
+    }
+}
+
+struct WeakContainer<T>{
+    data:RefCell<Weak<T>>
+}
+
+impl <T> WeakContainer<T>{
+    fn new() -> WeakContainer<T> {
+        WeakContainer { data: RefCell::new(Weak::new()) }
+    }
+}
+
+#[test]
+fn test_weak_pointer(){
+    let a = WeakContainer::new();
+    println!("data is {:?}", a.data.borrow().upgrade());
+    {
+        let b =Rc::new( Tester::new());
+        *a.data.borrow_mut() = Rc::downgrade(&b);
+        println!("data is {:?}", a.data.borrow().upgrade());
+        println!("weak reference count:{}", Rc::weak_count(&b));
+    }
+    println!("data is {:?}", a.data.borrow().upgrade());
 }
