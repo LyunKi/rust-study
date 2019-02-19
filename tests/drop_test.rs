@@ -1,8 +1,10 @@
-struct MySmartPointer<'a>{
-    data: &'a str
+//标识b生命周期至少与a一致
+struct MySmartPointer<'a,'b:'a>{
+    data: &'b str,
+    test: &'a str
 }
 
-impl <'a> Drop for MySmartPointer<'a>{
+impl <'a,'b:'a> Drop for MySmartPointer<'a,'b>{
     fn drop(&mut self) {
         println!("my smart pointer {} has been dropping", self.data);
     }
@@ -10,8 +12,10 @@ impl <'a> Drop for MySmartPointer<'a>{
 
 #[test]
 fn test_drop_1(){
-    let a = MySmartPointer { data: "a" };
-    let b = MySmartPointer { data: "b" };
+    let ta = String::from("a");
+    let tb = "b";
+    let a = MySmartPointer { data: &ta[..] ,test:&ta[..] };
+    let b = MySmartPointer { data: tb ,test:tb};
     println!("MySmartPointer created.");
     drop(a);
     println!("MySmartPointer dropped before the end of main.");
