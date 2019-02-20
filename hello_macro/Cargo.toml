@@ -1,0 +1,6 @@
+[package]
+name = "hello_macro"
+version = "0.1.0"
+authors = ["龙云 <longyun@co-mall.com>"]
+
+[dependencies]
