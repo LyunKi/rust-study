@@ -2,8 +2,18 @@
 name = "rust-study"
 version = "0.1.0"
 authors = ["龙云 <longyun@co-mall.com>"]
+edition = "2018"
 
 [dependencies]
 hello_macro = { path = "./hello_macro" }
 hello_macro_derive = { path = "./hello_macro/hello_macro_derive" }
 rand ="0.3.14"
+futures = "0.1.25"
+
+# enable the async-await stuff using a feature flag:
+tokio = { version = "0.1.13", features = ["async-await-preview"] }
+
+# Only needs to be explicitly imported if you want to make use of
+# the machinery to convert promises back and forth between 0.1 and 0.3
+# (which is built into the provided await! macro only otherwise):
+tokio-async-await = "0.1.4"
