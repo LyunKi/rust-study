@@ -15,12 +15,12 @@ fn main() {
     match a {
         Coin::C => println!("coin c"),
         Coin::E => println!("coin e"),
-        Coin::D(d) => println!("{:#?}", d)
+        Coin::D(d) => println!("{:#?}", d),
     };
 
     if let Coin::C = a {
         println!("coin c")
-    } else if let Coin::D(e) = a{
+    } else if let Coin::D(e) = a {
         println!("coin d,{:#?}", e);
     } else {
         println!("coin other")

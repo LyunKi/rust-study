@@ -1,5 +1,5 @@
-use std::rc::Rc;
 use std::cell::RefCell;
+use std::rc::Rc;
 use std::rc::Weak;
 
 enum List<T> {
@@ -29,11 +29,14 @@ enum MutableList<T> {
 #[test]
 fn test_rc_2() {
     let value = Rc::new(RefCell::new(5));
-    let a = Rc::new(MutableList::Cons(Rc::clone(&value), Rc::new(MutableList::Nil)));
+    let a = Rc::new(MutableList::Cons(
+        Rc::clone(&value),
+        Rc::new(MutableList::Nil),
+    ));
     let b = MutableList::Cons(Rc::new(RefCell::new(1)), Rc::clone(&a));
     let c = MutableList::Cons(Rc::new(RefCell::new(2)), Rc::clone(&a));
     //这里能这么写是因为rust的自动解引用功能.
-//    *((*value).borrow_mut()) += 10;
+    //    *((*value).borrow_mut()) += 10;
     *(value.borrow_mut()) += 10;
     println!("{}", Rc::strong_count(&value));
     println!("{}", Rc::strong_count(&a));
@@ -51,7 +54,7 @@ impl CircularList {
     fn tail(&self) -> Option<&RefCell<Rc<CircularList>>> {
         match self {
             CircularList::Cons(_, item) => Some(item),
-            Nil => None,
+            CircularList::Nil => None,
         }
     }
 }
@@ -71,42 +74,44 @@ fn test_crc_1() {
     };
     println!("b rc count after changing a = {}", Rc::strong_count(&b));
     println!("a rc count after changing a = {}", Rc::strong_count(&a));
-// 取消如下行的注释来观察引用循环;
-// 这会导致栈溢出
-//     println!("a next item = {:?}", a.tail());
+    // 取消如下行的注释来观察引用循环;
+    // 这会导致栈溢出
+    println!("a next item = {:?}", a.tail());
 }
 
 #[derive(Debug)]
 struct Tester;
 
-impl Drop for Tester{
+impl Drop for Tester {
     fn drop(&mut self) {
         println!("tester is dropping");
     }
 }
 
-impl  Tester{
-    fn new()-> Tester {
+impl Tester {
+    fn new() -> Tester {
         Tester
     }
 }
 
-struct WeakContainer<T>{
-    data:RefCell<Weak<T>>
+struct WeakContainer<T> {
+    data: RefCell<Weak<T>>,
 }
 
-impl <T> WeakContainer<T>{
+impl<T> WeakContainer<T> {
     fn new() -> WeakContainer<T> {
-        WeakContainer { data: RefCell::new(Weak::new()) }
+        WeakContainer {
+            data: RefCell::new(Weak::new()),
+        }
     }
 }
 
 #[test]
-fn test_weak_pointer(){
+fn test_weak_pointer() {
     let a = WeakContainer::new();
     println!("data is {:?}", a.data.borrow().upgrade());
     {
-        let b =Rc::new( Tester::new());
+        let b = Rc::new(Tester::new());
         *a.data.borrow_mut() = Rc::downgrade(&b);
         println!("data is {:?}", a.data.borrow().upgrade());
         println!("weak reference count:{}", Rc::weak_count(&b));

@@ -18,7 +18,6 @@ pub fn al_print_sleep(){
         await!(sleep(1));
         println!("Three");
     });
-
 }
 
 pub fn transform_o2n(){
@@ -44,7 +43,7 @@ async fn hello_world() -> &'static str {
     "Hello World"
 }
 
-pub fn transform_n2o(){
+pub  fn transform_n2o(){
     use std::future::Future as NewFuture;
     use futures::Future as OldFuture;
 
@@ -94,6 +93,12 @@ pub fn execution_concurrently(){
         tokio::spawn_async(write_to_stdout());
         tokio::spawn_async(write_to_stdout());
         tokio::spawn_async(write_to_stdout());
-
     });
+}
+
+pub fn print_async_l() {
+    al_print_sleep();
+    transform_o2n();
+    transform_n2o();
+    execution_concurrently();
 }

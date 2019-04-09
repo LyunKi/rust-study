@@ -40,8 +40,5 @@ fn main() {
 
     //    String::from("a").print_self();
 
-    async_l::al_print_sleep();
-    async_l::transform_o2n();
-    async_l::transform_n2o();
-    async_l::execution_concurrently();
+    async_l::print_async_l();
 }
